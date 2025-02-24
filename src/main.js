@@ -47,6 +47,7 @@ refs.form.addEventListener('submit', async event => {
     });
     refs.input.value = '';
     renderImg([], true);
+    hideLoadMoreBtn();
     return;
   }
 
@@ -84,6 +85,7 @@ refs.form.addEventListener('submit', async event => {
       timeout: 3000,
     });
     renderImg([], true);
+    hideLoadMoreBtn();
     console.error('Error fetching images:', error);
   } finally {
     hideLoader();
@@ -105,13 +107,14 @@ refs.loadMoreBtn.addEventListener('click', async () => {
         position: 'topRight',
         timeout: 3000,
       });
+      hideLoadMoreBtn();
       return;
     }
 
     renderImg(hits, false);
     smoothScroll();
 
-    if (hits.length < 40) { 
+    if (hits.length < 40) {
       hideLoadMoreBtn();
       iziToast.info({
         title: 'End of results',
@@ -130,7 +133,8 @@ refs.loadMoreBtn.addEventListener('click', async () => {
       timeout: 3000,
     });
     console.error('Error fetching images:', error);
+    hideLoadMoreBtn();
   } finally {
-    showLoader();
+    hideLoader();
   }
 });
